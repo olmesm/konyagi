@@ -1,0 +1,13 @@
+{
+  "type": "module",
+  "scripts": {
+    "test": "rm -rf node_modules* && npm install && tsx watch index.ts"
+  },
+  "dependencies": {
+    "globby": "*",
+    "gray-matter": "*",
+    "marked": "*",
+    "tsx": "*",
+    "konyagi": "*"
+  }
+}

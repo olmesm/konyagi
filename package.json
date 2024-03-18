@@ -1,0 +1,43 @@
+{
+  "name": "konyagi",
+  "version": "0.0.10",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/olmesm/konyagi"
+  },
+  "description": "Task controller. Built with file (markdown document) processing in mind.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "exports": {
+    "require": {
+      "types": "./dist/index.d.cts",
+      "default": "./dist/index.cjs"
+    },
+    "import": {
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
+    }
+  },
+  "bin": "./dist/cli.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "pkgroll",
+    "push": "rm -rf dist && npm run build && npm publish --access public"
+  },
+  "keywords": [],
+  "author": "github.com/olmesm",
+  "license": "MIT",
+  "dependencies": {
+    "@mobily/ts-belt": "^3.13.1",
+    "globby": "^14.0.1",
+    "meow": "^13.2.0",
+    "tsx": "^4.7.1",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.28",
+    "pkgroll": "^2.0.2"
+  }
+}

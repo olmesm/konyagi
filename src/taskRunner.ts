@@ -22,6 +22,7 @@ export const taskRunner = <S>(
   if (G.isString(currentAction)) {
     const newTasks = taskLookup(currentAction);
     const onlyTasks = Object.values(newTasks);
+
     if (A.every(onlyTasks, G.isNullable))
       throw new Error(`[error] ${currentAction} appears to have no tasks`);
 

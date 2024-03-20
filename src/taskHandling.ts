@@ -53,7 +53,7 @@ export const dynamicTaskHandlerImport = (
         const key = _fileName.replace(path.extname(_fileName), "");
 
         Object.entries(fns as TaskObj).forEach(([taskName, taskFn]) => {
-          setTaskHandlers(key, taskName, taskFn);
+          if (!taskName.startsWith("_")) setTaskHandlers(key, taskName, taskFn);
         });
       })
     )

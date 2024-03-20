@@ -45,6 +45,9 @@ cd example
 
 npm install
 npm test
+
+# test cli build
+npm run build && NODE_ENV=development npx tsx src/cli.ts example/tasks load-docs
 ```
 
 ## Konyagi

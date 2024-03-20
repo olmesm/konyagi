@@ -1,7 +1,7 @@
-import util from "util";
 import { Job } from "../types.js";
+import { deepLog, log as uLog } from "../utils/log.js";
 
 export const log: Job<any> = (s) => {
-  console.log(util.inspect({ s }, { colors: true, depth: 10 }));
+  uLog.dev(deepLog(s, 10));
   return [[], s];
 };

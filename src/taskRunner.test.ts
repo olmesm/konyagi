@@ -13,4 +13,6 @@ describe("taskrunner", () => {
   it("appends any actions from the response to task list", async () => {});
   it("appends only truthy actions", async () => {});
   it("returns a new state", async () => {});
+  it("offfers a list of operations that were called", async () => {});
+  it("prevents any taskfile from running more than 3 times", async () => {});
 });

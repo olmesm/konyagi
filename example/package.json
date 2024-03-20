@@ -6,8 +6,8 @@
   "dependencies": {
     "globby": "*",
     "gray-matter": "*",
+    "konyagi": "file:..",
     "marked": "*",
-    "tsx": "*",
-    "konyagi": "*"
+    "tsx": "*"
   }
 }

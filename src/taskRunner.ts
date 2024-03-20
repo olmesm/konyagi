@@ -7,11 +7,12 @@ import { handlePromise } from "./utils/handlePromise.js";
 import { truthyConcat } from "./utils/truthyConcat.js";
 import { workOutputSchema } from "./helpers/validators.js";
 import { getTaskHandler } from "./taskHandling.js";
+import { log } from "./utils/log.js";
 
 export const taskRunner = <S>(
   actions: readonly Task<S>[],
   state: S,
-  taskLookup: (s: string) => Task<S>[] = getTaskHandler,
+  taskLookup = getTaskHandler,
   _workOutputSchema = workOutputSchema()
 ): MaybePromise<S> => {
   const [currentAction, ...nextActions] = actions;
@@ -19,10 +20,18 @@ export const taskRunner = <S>(
   if (G.isNullable(currentAction)) return state;
 
   if (G.isString(currentAction)) {
-    const expandedActions = taskLookup(currentAction);
+    const newTasks = taskLookup(currentAction);
+    const onlyTasks = Object.values(newTasks);
+    if (A.every(onlyTasks, G.isNullable))
+      throw new Error(`[error] ${currentAction} appears to have no tasks`);
+
+    log.info(
+      `new tasks from task lookup "${currentAction}":`,
+      Object.keys(newTasks).join(",")
+    );
 
     // prepend expansion
-    return taskRunner(truthyConcat(expandedActions, nextActions), state);
+    return taskRunner(truthyConcat(onlyTasks, nextActions), state);
   }
 
   // append new actions

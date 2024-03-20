@@ -1,6 +1,6 @@
 import type { LocalJob, State } from "../utils/types.js";
 import matter from "gray-matter";
-import { globbySync } from "globby";
+import { globby } from "globby";
 import path from "path";
 import fs from "fs";
 
@@ -18,15 +18,17 @@ const handleParse = (fullPath: string): State[number] => {
   }
 };
 
-export const load: LocalJob = () => {
-  const content = globbySync(path.resolve("content"));
+export const load: LocalJob = async (s) => {
+  return globby(path.resolve("example/content")).then((content) => {
+    return [
+      ["md-html"],
+      [
+        ...content.map((c) => {
+          const fullPath = path.resolve(c);
 
-  return [
-    ["md-html"],
-    content.map((c) => {
-      const fullPath = path.resolve(c);
-
-      return handleParse(fullPath);
-    }),
-  ];
+          return handleParse(fullPath);
+        }),
+      ],
+    ];
+  });
 };

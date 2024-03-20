@@ -8,6 +8,7 @@ export const log = {
   warn: (...args: any[]): void => console.warn("[warn] ", ...args),
   error: (...args: any[]): void => console.trace("[error] ", ...args),
   dev: (...args: any[]): void => {
-    process.env.NODE_ENV === "development" && console.log("[dev] ", ...args);
+    process.env.NODE_ENV === "development" &&
+      console.log("[dev] ", deepLog(args));
   },
 };

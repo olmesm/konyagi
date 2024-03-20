@@ -6,7 +6,7 @@ marked.use({ gfm: true });
 
 export const mdHtml: LocalJob = (s) => {
   return [
-    ["log"],
+    ["nested/log#goodLog"],
     s.map(([input, output]) => [
       input,
       { ...output, html: marked.parse(input.content) },

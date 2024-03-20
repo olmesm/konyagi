@@ -3,23 +3,38 @@ import path from "path";
 import { esSafe } from "./helpers/esSafe.js";
 import { TaskHandlerCache, Task } from "./types.js";
 import * as ts from "@mobily/ts-belt";
-const { G, A, pipe, D } = esSafe(ts);
+import { log } from "./utils/log.js";
+const { G } = esSafe(ts);
 
 export const taskHandlerCache: TaskHandlerCache = new Map();
+type TaskRecord = Record<string, Task<any>>;
 
-export const getTaskHandler = (name: string): Task<any>[] => {
-  const actions = taskHandlerCache.get(name);
+export const getTaskHandler = (taskName: string): TaskRecord => {
+  let actions = taskName.includes("#")
+    ? { [taskName]: taskHandlerCache.get(taskName)! }
+    : Object.fromEntries(
+        [...taskHandlerCache.entries()].filter(([_name, _fn]) =>
+          _name.startsWith(taskName)
+        )
+      );
 
   if (G.isNullable(actions))
-    throw new Error(`[error] "${name}" was not found as a valid action.`);
+    throw new Error(`[error] "${taskName}" was not found as a valid action.`);
 
-  return Object.values(actions);
+  return actions;
 };
 
 type TaskObj = Record<string, Task<any>>;
+const splitAt = <T>(arr: T[], index: number) => [
+  arr.slice(0, index),
+  arr.slice(index),
+];
 
-export const setTaskHandlers = (key: string, fns: Record<string, Task<any>>) =>
-  taskHandlerCache.set(key, fns);
+export const setTaskHandlers = (...args: (string | Task<any>)[]) => {
+  const [keys, fns] = splitAt(args, -1) as unknown as [string[], Task<any>[]];
+  log.info("loaded", keys.join("#"));
+  taskHandlerCache.set(keys.join("#"), fns.at(0)!);
+};
 
 const loader = (p: string) => import(p);
 
@@ -37,11 +52,9 @@ export const dynamicTaskHandlerImport = (
         const _fileName = fileName.replace(dir + path.sep, "");
         const key = _fileName.replace(path.extname(_fileName), "");
 
-        // prevent users relying on alphabetical behaviour
-        setTaskHandlers(
-          key,
-          pipe(fns as TaskObj, D.toPairs, A.shuffle, D.fromPairs)
-        );
+        Object.entries(fns as TaskObj).forEach(([taskName, taskFn]) => {
+          setTaskHandlers(key, taskName, taskFn);
+        });
       })
     )
   ).then(() => getTaskHandler);

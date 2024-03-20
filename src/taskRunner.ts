@@ -15,7 +15,7 @@ export const taskRunner = <S>(
   taskLookup = getTaskHandler,
   _workOutputSchema = workOutputSchema()
 ): MaybePromise<S> => {
-  const [currentAction, ...nextActions] = actions;
+  const [currentAction, ...nextActions] = A.filter(actions, Boolean);
 
   if (G.isNullable(currentAction)) return state;
 

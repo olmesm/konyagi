@@ -21,8 +21,12 @@ type TaskObj = Record<string, Task<any>>;
 export const setTaskHandlers = (key: string, fns: Record<string, Task<any>>) =>
   taskHandlerCache.set(key, fns);
 
+/**
+ * See globby for deatils on allowed patterns
+ * https://www.npmjs.com/package/globby#patterns
+ */
 export const dynamicTaskHandlerImport = (
-  dir: string
+  dir: string[] | string
 ): Promise<typeof getTaskHandler> =>
   Promise.all(
     globbySync(dir).map((fileName) =>

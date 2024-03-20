@@ -7,39 +7,32 @@ import { truthyConcat } from "./utils/truthyConcat.js";
 import { workOutput } from "./utils/validators.js";
 import { getTaskHandler } from "./taskHandling.js";
 
-export const taskRunnerSetup = <S>(
+export const taskRunner = <S>(
+  actions: readonly Task<S>[],
+  state: S,
   taskLookup: (s: string) => Task<S>[] = getTaskHandler
-) => {
-  const taskRunner = (
-    actions: readonly Task<S>[],
-    state: S
-  ): MaybePromise<S> => {
-    const [currentAction, ...nextActions] = actions;
+): MaybePromise<S> => {
+  const [currentAction, ...nextActions] = actions;
 
-    if (G.isNullable(currentAction)) return state;
+  if (G.isNullable(currentAction)) return state;
 
-    if (G.isString(currentAction)) {
-      const expandedActions = taskLookup(currentAction);
+  if (G.isString(currentAction)) {
+    const expandedActions = taskLookup(currentAction);
 
-      // prepend expansion
-      return taskRunner(truthyConcat(expandedActions, nextActions), state);
-    }
+    // prepend expansion
+    return taskRunner(truthyConcat(expandedActions, nextActions), state);
+  }
 
-    const result = currentAction(state);
-
+  // append new actions
+  return handlePromise(currentAction(state), (resolvedState) => {
     // validate response
-    workOutput.parse(result);
+    workOutput.parse(resolvedState);
 
-    if (A.every(result, G.isNullable))
+    if (A.every(resolvedState, G.isNullable))
       throw new Error(`[error] ${currentAction.name}`);
 
-    const [newActions, newState] = result;
+    const [newActions, newState] = resolvedState;
 
-    // append new actions
-    return handlePromise(newState, (resolvedState) =>
-      taskRunner(truthyConcat(nextActions, newActions), resolvedState)
-    );
-  };
-
-  return taskRunner;
+    return taskRunner(truthyConcat(nextActions, newActions), newState);
+  });
 };

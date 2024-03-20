@@ -42,6 +42,7 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "pkgroll",
+    "test": "vitest",
     "push": "rm -rf dist && npm run build && npm publish --access public"
   },
   "author": "github.com/olmesm",
@@ -55,6 +56,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.28",
-    "pkgroll": "^2.0.2"
+    "pkgroll": "^2.0.2",
+    "vitest": "^1.4.0"
   }
 }

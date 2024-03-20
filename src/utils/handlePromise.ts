@@ -1,6 +1,7 @@
-import { default as ts } from "@mobily/ts-belt";
+import { esSafe } from "../helpers/esSafe.js";
+import * as ts from "@mobily/ts-belt";
 import { MaybePromise } from "../types.js";
-const { G } = ts;
+const { G } = esSafe(ts);
 
 export const handlePromise = <T, Fn extends (t: T) => any>(
   maybePromise: MaybePromise<T>,

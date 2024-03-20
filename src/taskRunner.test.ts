@@ -1,43 +1,16 @@
-import { default as ts } from "@mobily/ts-belt";
-const { G, A } = ts;
+import { describe, expect, it } from "vitest";
+import { taskRunner } from "./taskRunner.js";
 
-import { Task, MaybePromise } from "./types.js";
-import { handlePromise } from "./utils/handlePromise.js";
-import { truthyConcat } from "./utils/truthyConcat.js";
-import { workOutput } from "./utils/validators.js";
-import { getTaskHandler } from "./taskHandling.js";
-
-export const taskRunnerSetup = <S>(
-  taskLookup: (s: string) => Task<S>[] = getTaskHandler
-) => {
-  const taskRunner = (
-    actions: readonly Task<S>[],
-    state: S
-  ): MaybePromise<S> => {
-    const [currentAction, ...nextActions] = actions;
-
-    if (G.isNullable(currentAction)) return state;
-
-    if (G.isString(currentAction)) {
-      const expandedActions = taskLookup(currentAction);
-
-      // prepend expansion
-      return taskRunner(truthyConcat(expandedActions, nextActions), state);
-    }
-
-    // append new actions
-    return handlePromise(currentAction(state), (resolvedState) => {
-      // validate response
-      workOutput.parse(resolvedState);
-
-      if (A.every(resolvedState, G.isNullable))
-        throw new Error(`[error] ${currentAction.name}`);
-
-      const [newActions, newState] = resolvedState;
-
-      return taskRunner(truthyConcat(nextActions, newActions), newState);
-    });
-  };
-
-  return taskRunner;
-};
+describe("taskrunner", () => {
+  it("returns the state if no actions", async () => {
+    const state = Math.random();
+    const res = taskRunner([], state);
+    expect(res).toBe(state);
+  });
+  it("looks up tasks if a string ref, and appends them to the list", async () => {});
+  it("returns a promise or solved result", async () => {});
+  it("validates the response", async () => {});
+  it("appends any actions from the response to task list", async () => {});
+  it("appends only truthy actions", async () => {});
+  it("returns a new state", async () => {});
+});

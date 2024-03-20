@@ -1,9 +1,9 @@
 import { globbySync } from "globby";
 import path from "path";
-
+import { esSafe } from "./helpers/esSafe.js";
 import { TaskHandlerCache, Task } from "./types.js";
-import { default as ts } from "@mobily/ts-belt";
-const { G, A, pipe, D } = ts;
+import * as ts from "@mobily/ts-belt";
+const { G, A, pipe, D } = esSafe(ts);
 
 export const taskHandlerCache: TaskHandlerCache = new Map();
 
@@ -21,16 +21,19 @@ type TaskObj = Record<string, Task<any>>;
 export const setTaskHandlers = (key: string, fns: Record<string, Task<any>>) =>
   taskHandlerCache.set(key, fns);
 
+const loader = (p: string) => import(p);
+
 /**
  * See globby for deatils on allowed patterns
  * https://www.npmjs.com/package/globby#patterns
  */
 export const dynamicTaskHandlerImport = (
-  dir: string[] | string
+  dir: string[] | string,
+  _loader = loader
 ): Promise<typeof getTaskHandler> =>
   Promise.all(
     globbySync(dir).map((fileName) =>
-      import(path.resolve(fileName)).then((fns) => {
+      _loader(path.resolve(fileName)).then((fns) => {
         const _fileName = fileName.replace(dir + path.sep, "");
         const key = _fileName.replace(path.extname(_fileName), "");
 

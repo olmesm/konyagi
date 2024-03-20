@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import meow from "meow";
-import { dynamicTaskHandlerImport, taskRunnerSetup } from "./index.js";
+import { dynamicTaskHandlerImport, taskRunner } from "./index.js";
 import fs from "fs";
 import path from "path";
 
@@ -31,7 +31,6 @@ const main = async () => {
   const getTaskHandler = await dynamicTaskHandlerImport(
     cli.input.at(0) || "tasks"
   );
-  const taskRunner = taskRunnerSetup(getTaskHandler);
 
   let state: any;
 
@@ -41,7 +40,7 @@ const main = async () => {
     );
   }
 
-  taskRunner([cli.input.at(1) || "start"], state);
+  taskRunner([cli.input.at(1) || "start"], state, getTaskHandler);
 };
 
 main();

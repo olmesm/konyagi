@@ -52,9 +52,7 @@ npm run build && NODE_ENV=development npx tsx src/cli.ts example/tasks load-docs
 
 ## Konyagi
 
-In another chapter of my life, I was thrown in the deep end and sent off to program a production line for my first time.
-
-It was a bottling plant for alcoholic spirits in [South Sudan](https://en.wikipedia.org/wiki/Southern_Sudan_Beverages_Limited).
+In another chapter of my life, I worked as a control system engineer. The first machine I programmed was a production line in [South Sudan](https://en.wikipedia.org/wiki/Southern_Sudan_Beverages_Limited) that bottled alcoholic spirits.
 
 The last spirit to run through the production cycle was a gin product called Konyagi.
 

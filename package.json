@@ -1,6 +1,6 @@
 {
   "name": "konyagi",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "repository": {
     "type": "git",
     "url": "https://github.com/olmesm/konyagi"
@@ -21,12 +21,29 @@
     }
   },
   "bin": "./dist/cli.js",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "system",
+    "make",
+    "tool",
+    "asset",
+    "pipeline",
+    "series",
+    "parallel",
+    "task",
+    "async",
+    "cli",
+    "build",
+    "scaffold",
+    "jake"
+  ],
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "pkgroll",
     "push": "rm -rf dist && npm run build && npm publish --access public"
   },
-  "keywords": [],
   "author": "github.com/olmesm",
   "license": "MIT",
   "dependencies": {

@@ -45,6 +45,6 @@ export const taskRunner = <S>(
 
     const [newActions, newState] = resolvedWorkOutput;
 
-    return taskRunner(truthyConcat(nextActions, newActions), newState);
+    return taskRunner(truthyConcat(newActions, nextActions), newState);
   });
 };

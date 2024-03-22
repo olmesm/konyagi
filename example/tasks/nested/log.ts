@@ -1,4 +1,4 @@
-import { log as kLog } from "konyagi";
+import { kLog } from "konyagi";
 import { LocalJob } from "../../utils/types.js";
 
 export const badLog: LocalJob = () => {

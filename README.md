@@ -47,7 +47,7 @@ npm install
 npm test
 
 # test cli build
-npm run build && NODE_ENV=development npx tsx src/cli.ts example/tasks load-docs
+npm run build && NODE_ENV=debug npx tsx src/cli.ts example/tasks load-docs
 ```
 
 ## Konyagi

@@ -1,7 +1,7 @@
 import { Job } from "../types.js";
-import { deepLog, log as uLog } from "../utils/log.js";
+import { deepLog } from "../utils/log.js";
+import { kTap } from "./tap.js";
 
-export const kLog: Job<any> = (s) => {
-  uLog.info(deepLog(s, 10));
-  return [[], s];
-};
+export const kLog: Job<any> = kTap((s) => {
+  console.info("[info] ", deepLog(s, 10));
+});

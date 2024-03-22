@@ -1,6 +1,6 @@
 {
   "name": "konyagi",
-  "version": "0.0.12",
+  "version": "0.0.15",
   "repository": {
     "type": "git",
     "url": "https://github.com/olmesm/konyagi"
@@ -48,7 +48,7 @@
   "author": "github.com/olmesm",
   "license": "MIT",
   "dependencies": {
-    "@mobily/ts-belt": "^3.13.1",
+    "@mobily/ts-belt": "^4.0.0-rc.5",
     "globby": "^14.0.1",
     "meow": "^13.2.0",
     "tsx": "^4.7.1",

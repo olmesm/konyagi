@@ -4,7 +4,7 @@ const { G, A } = esSafe(ts);
 
 import { Task, MaybePromise } from "./types.js";
 import { handlePromise } from "./utils/handlePromise.js";
-import { truthyConcat } from "./utils/truthyConcat.js";
+import { truthyConcat } from "./helpers/truthyConcat.js";
 import { workOutputSchema } from "./helpers/validators.js";
 import { getTaskHandler } from "./taskHandling.js";
 import { log } from "./utils/log.js";
